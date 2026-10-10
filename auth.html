@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Peteichuk — Вхід та реєстрація</title>
+<link rel="stylesheet" href="css/auth.css">
+<link rel="icon" href="logotype/logotype.png">
+</head>
+<body>
+<main class="auth-page">
+<div class="auth-card">
+<a class="auth-logo" href="index.html"><img src="logotype/peteichuk.png" alt="Peteichuk"></a>
+<div class="auth-tabs">
+<button class="auth-tab active" type="button" data-auth-tab="login">Вхід</button>
+<button class="auth-tab" type="button" data-auth-tab="register">Реєстрація</button>
+</div>
+<div class="auth-status" id="authPageStatus" aria-live="polite"></div>
+<form class="auth-form active" id="loginForm" novalidate>
+<h1>Вхід</h1>
+<p>Увійдіть до свого облікового запису.</p>
+<label for="loginEmail">Email</label>
+<input type="email" id="loginEmail" autocomplete="email" maxlength="254" required>
+<div class="auth-field-error" id="loginEmailError"></div>
+<label for="loginPassword">Пароль</label>
+<input type="password" id="loginPassword" autocomplete="current-password" maxlength="128" required>
+<div class="auth-field-error" id="loginPasswordError"></div>
+<button type="submit">Увійти</button>
+</form>
+<form class="auth-form" id="registerForm" novalidate>
+<h1>Реєстрація</h1>
+<p>Створіть обліковий запис для доступу до контактної форми та кабінету.</p>
+<label for="registerName">Повне ім'я</label>
+<input type="text" id="registerName" autocomplete="name" maxlength="100" required>
+<div class="auth-field-error" id="registerNameError"></div>
+<label for="registerEmail">Email</label>
+<input type="email" id="registerEmail" autocomplete="email" maxlength="254" required>
+<div class="auth-field-error" id="registerEmailError"></div>
+<label for="registerPassword">Пароль</label>
+<input type="password" id="registerPassword" autocomplete="new-password" maxlength="128" required>
+<div class="auth-field-error" id="registerPasswordError"></div>
+<label for="registerPasswordConfirm">Повторіть пароль</label>
+<input type="password" id="registerPasswordConfirm" autocomplete="new-password" maxlength="128" required>
+<div class="auth-field-error" id="registerPasswordConfirmError"></div>
+<button type="submit">Створити акаунт</button>
+</form>
+<div class="auth-links">
+<a class="auth-back" href="cabinet.html">Особистий кабінет</a>
+<a class="auth-back" href="index.html">Повернутися на сайт</a>
+</div>
+</div>
+</main>
+<script src="js/auth.js"></script>
+</body>
+</html>

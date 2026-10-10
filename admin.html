@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Peteichuk — Панель управління</title>
+<link rel="stylesheet" href="css/admin.css">
+<style>
+.reviews-admin-summary{margin-top:18px}
+.review-admin-card{border:1px solid #ddd;background:#fff;padding:20px;margin-top:14px}
+.review-admin-card.is-hidden{opacity:.68;background:#f7f7f7}
+.review-admin-top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+.review-admin-name{font-weight:700;font-size:18px}
+.review-admin-meta{font-size:13px;color:#666;margin-top:5px}
+.review-admin-rating{color:#002c7e;font-size:18px;white-space:nowrap}
+.review-admin-service{display:inline-block;border:1px solid #ddd;padding:5px 9px;font-size:12px;margin-top:10px}
+.review-admin-text{margin:16px 0;line-height:1.65;white-space:pre-wrap}
+.review-admin-status{font-size:13px;margin:10px 0}
+.review-admin-status.published{color:#176b35}
+.review-admin-status.hidden{color:#9b2c2c}
+.review-admin-reply{border-left:3px solid #002c7e;background:#f7f8fa;padding:12px 15px;margin:15px 0}
+.review-admin-reply strong{display:block;margin-bottom:5px}
+.review-admin-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+.review-admin-actions button{border:1px solid #ccc;background:#fff;padding:9px 13px;cursor:pointer;font:inherit}
+.review-admin-actions button:hover{border-color:#002c7e;color:#002c7e}
+.review-admin-actions button.danger{color:#a00000;border-color:#d5b0b0}
+.review-admin-actions button.danger:hover{border-color:#a00000;color:#fff;background:#a00000}
+.review-admin-editor{display:none;margin-top:15px}
+.review-admin-editor.active{display:block}
+.review-admin-editor textarea,.review-admin-reply-form textarea{width:100%;box-sizing:border-box;min-height:120px;padding:12px;border:1px solid #ccc;font:inherit;resize:vertical}
+.review-admin-reply-form{margin-top:15px}
+.review-admin-reply-form textarea{min-height:90px}
+.review-admin-form-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.review-admin-form-actions button{border:1px solid #ccc;background:#fff;padding:8px 12px;cursor:pointer;font:inherit}
+.review-admin-form-actions button.primary{background:#002c7e;color:#fff;border-color:#002c7e}
+.review-admin-empty{border:1px dashed #ccc;padding:30px;text-align:center;color:#666}
+.review-admin-warning{padding:12px 15px;background:#fff7df;border:1px solid #e4cf91;margin-top:15px;font-size:14px;line-height:1.5}
+#clearReviewsAdmin{border-color:#a00000;color:#a00000}
+#clearReviewsAdmin:hover{background:#a00000;color:#fff;border-color:#a00000}
+@media(max-width:600px){
+.review-admin-top{display:block}
+.review-admin-rating{margin-top:8px}
+.review-admin-actions button{width:100%}
+}
+
+.moderation-summary{margin-top:18px}
+.moderation-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:18px;margin-top:18px}
+.moderation-box{border:1px solid #ddd;background:#fff;padding:20px}
+.moderation-box h2{margin:0 0 15px;font-size:20px}
+.moderation-box p{line-height:1.55;color:#555}
+.moderation-user-search{display:flex;gap:8px;margin-bottom:15px}
+.moderation-user-search input{flex:1;min-width:0;padding:11px 12px;border:1px solid #ccc;font:inherit}
+.moderation-user-search button,.moderation-button{border:1px solid #ccc;background:#fff;padding:10px 13px;cursor:pointer;font:inherit}
+.moderation-user-search button:hover,.moderation-button:hover{border-color:#002c7e;color:#002c7e}
+.moderation-user{border:1px solid #ddd;padding:15px;margin-top:10px;background:#fff}
+.moderation-user-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.moderation-user-name{font-weight:700;font-size:17px}
+.moderation-user-meta{font-size:13px;color:#666;margin-top:4px;word-break:break-word}
+.moderation-user-status{display:inline-block;padding:4px 8px;border:1px solid #ccc;font-size:12px;margin-top:8px}
+.moderation-user-status.active{color:#176b35;border-color:#b8d9c2}
+.moderation-user-status.muted{color:#9b6500;border-color:#e4cf91}
+.moderation-user-status.banned{color:#a00000;border-color:#d5b0b0}
+.moderation-user-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.moderation-user-actions button{border:1px solid #ccc;background:#fff;padding:8px 11px;cursor:pointer;font:inherit}
+.moderation-user-actions button:hover{border-color:#002c7e;color:#002c7e}
+.moderation-user-actions button.danger{color:#a00000;border-color:#d5b0b0}
+.moderation-user-actions button.danger:hover{background:#a00000;color:#fff;border-color:#a00000}
+.moderation-form{display:grid;gap:10px}
+.moderation-form input,.moderation-form select,.moderation-form textarea{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #ccc;font:inherit}
+.moderation-form textarea{min-height:90px;resize:vertical}
+.moderation-form button{border:1px solid #002c7e;background:#002c7e;color:#fff;padding:11px 14px;cursor:pointer;font:inherit}
+.moderation-form button:hover{opacity:.9}
+.moderation-rule-list{display:grid;gap:8px;margin-top:12px}
+.moderation-rule{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid #ddd;padding:9px 11px}
+.moderation-rule span{word-break:break-word}
+.moderation-rule button{border:1px solid #d5b0b0;background:#fff;color:#a00000;padding:5px 9px;cursor:pointer}
+.moderation-rule button:hover{background:#a00000;color:#fff}
+.moderation-mode{margin-top:10px}
+.moderation-history{margin-top:12px}
+.moderation-history-item{border-left:3px solid #002c7e;background:#f7f8fa;padding:10px 12px;margin-top:8px}
+.moderation-history-item strong{display:block}
+.moderation-history-item small{display:block;color:#666;margin-top:4px}
+.moderation-empty{border:1px dashed #ccc;padding:25px;text-align:center;color:#666}
+.moderation-warning{padding:12px 15px;background:#fff7df;border:1px solid #e4cf91;margin-top:15px;font-size:14px;line-height:1.5}
+.moderation-danger{padding:12px 15px;background:#fff2f2;border:1px solid #dfb4b4;margin-top:15px;font-size:14px;line-height:1.5}
+@media(max-width:900px){
+.moderation-grid{grid-template-columns:1fr}
+}
+
+.moderation-protected{padding:12px 15px;background:#f4f7ff;border:1px solid #c9d6ef;margin-top:15px;font-size:14px;line-height:1.5}
+.moderation-owner-tools{border:1px solid #ddd;background:#fff;padding:20px;margin-top:18px}
+.moderation-owner-tools h2{margin:0 0 10px;font-size:20px}
+.moderation-owner-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+.moderation-owner-actions button{border:1px solid #ccc;background:#fff;padding:10px 13px;cursor:pointer;font:inherit}
+.moderation-owner-actions button:hover{border-color:#002c7e;color:#002c7e}
+.moderation-owner-actions button.danger{color:#a00000;border-color:#d5b0b0}
+.moderation-owner-actions button.danger:hover{background:#a00000;color:#fff;border-color:#a00000}
+.moderation-protected-badge{display:inline-block;margin-top:8px;padding:4px 8px;border:1px solid #b9c9e6;color:#002c7e;font-size:12px}
+
+@media(max-width:600px){
+.moderation-user-top{display:block}
+.moderation-user-actions button{width:100%}
+.moderation-user-search{display:block}
+.moderation-user-search button{width:100%;margin-top:8px}
+}
+
+
+</style>
+</head>
+<body>
+<main class="admin-page">
+<div class="admin-container">
+<header class="admin-header">
+<div>
+<a href="index.html" class="admin-logo"><img src="logotype/peteichuk.png" alt="Peteichuk"></a>
+<p>Панель управління чатом</p>
+</div>
+<div class="admin-actions">
+<a href="cabinet.html">Кабінет</a>
+<a href="index.html">На сайт</a>
+<button id="adminLogout" type="button">Вийти</button>
+</div>
+</header>
+<div class="admin-status" id="adminStatus" aria-live="polite"></div>
+<section class="admin-summary">
+<div><span>Користувачів</span><strong id="usersCount">0</strong></div>
+<div><span>Онлайн</span><strong id="onlineCount">0</strong></div>
+<div><span>Повідомлень</span><strong id="messagesCount">0</strong></div>
+<div><span>Нових</span><strong id="newCount">0</strong></div>
+<div><span>Партнерських</span><strong id="partnerCount">0</strong></div>
+<div><span>Нових партнерських</span><strong id="newPartnerCount">0</strong></div>
+</section>
+<section class="admin-section" id="moderationSection">
+<div class="admin-section-head">
+<div>
+<p>Модерація</p>
+<h1>Користувачі та правила контенту</h1>
+</div>
+</div>
+<div class="admin-summary moderation-summary">
+<div><span>Попереджень</span><strong id="moderationWarningsCount">0</strong></div>
+<div><span>Порушень</span><strong id="moderationViolationsCount">0</strong></div>
+<div><span>Мутів</span><strong id="moderationMutedCount">0</strong></div>
+<div><span>Банів</span><strong id="moderationBannedCount">0</strong></div>
+</div>
+<div class="moderation-warning">
+Модерація зберігається локально у поточному прототипі. Реальний захист від обходу блокування потребуватиме серверної перевірки та Supabase RLS.
+</div>
+<div class="moderation-grid">
+<div class="moderation-box">
+<h2>Модерація користувачів</h2>
+<div class="moderation-user-search">
+<input id="moderationUserSearch" type="search" placeholder="Пошук за ім'ям або email..." maxlength="254">
+<button id="moderationRefreshUsers" type="button">Оновити</button>
+</div>
+<div id="moderationUsersList"></div>
+</div>
+<div>
+<div class="moderation-box">
+<h2>Заборонені слова</h2>
+<form id="bannedWordForm" class="moderation-form">
+<input id="bannedWordInput" type="text" placeholder="Слово або фраза" maxlength="120" required>
+<select id="bannedWordAction">
+<option value="replace">Замінювати на ***</option>
+<option value="block">Повністю блокувати</option>
+<option value="review">Передавати на модерацію</option>
+</select>
+<button type="submit">Додати правило</button>
+</form>
+<div id="bannedWordsList" class="moderation-rule-list"></div>
+</div>
+<div class="moderation-box" style="margin-top:18px">
+<h2>Заборонені сайти</h2>
+<form id="bannedDomainForm" class="moderation-form">
+<input id="bannedDomainInput" type="text" placeholder="example.com" maxlength="253" required>
+<select id="bannedDomainAction">
+<option value="block">Блокувати</option>
+<option value="review">Передавати на модерацію</option>
+</select>
+<button type="submit">Додати домен</button>
+</form>
+<div id="bannedDomainsList" class="moderation-rule-list"></div>
+</div>
+<div class="moderation-box" style="margin-top:18px">
+<h2>Режим зовнішніх посилань</h2>
+<div class="moderation-form">
+<select id="externalLinksMode">
+<option value="allow">Дозволяти зовнішні посилання</option>
+<option value="block">Блокувати всі зовнішні посилання</option>
+<option value="blacklist">Блокувати лише заборонені домени</option>
+<option value="review">Передавати зовнішні посилання на модерацію</option>
+</select>
+<button id="saveExternalLinksMode" type="button">Зберегти режим</button>
+</div>
+</div>
+</div>
+</div>
+<div class="moderation-box" style="margin-top:18px">
+<h2>Історія модерації користувача</h2>
+<div id="moderationHistory">
+<div class="moderation-empty">Оберіть користувача для перегляду історії.</div>
+</div>
+</div>
+</section>
+<section class="admin-section">
+    
+<div class="moderation-owner-tools" id="moderationOwnerTools">
+<h2>Повне очищення модерації</h2>
+<p>Ці дії доступні лише власнику. Вони дозволяють повністю скинути санкції та історію модерації.</p>
+<div class="moderation-owner-actions">
+<button type="button" id="clearSelectedModerationHistory">Очистити історію користувача</button>
+<button type="button" id="clearAllWarnings" class="danger">Очистити всі попередження</button>
+<button type="button" id="clearAllViolations" class="danger">Очистити всі порушення</button>
+<button type="button" id="clearAllModeration" class="danger">Скинути всю модерацію</button>
+</div>
+</div>
+
+<div class="admin-section-head">
+<div>
+<p>Аналітика</p>
+<h1>Статистика сайту</h1>
+</div>
+<button id="clearAnalytics" type="button">Очистити аналітику</button>
+</div>
+<div class="admin-summary analytics-summary">
+<div><span>Відвідування</span><strong id="analyticsVisits">0</strong></div>
+<div><span>Подій</span><strong id="analyticsEvents">0</strong></div>
+<div><span>Унікальних сесій</span><strong id="analyticsSessions">0</strong></div>
+<div><span>Останній візит</span><strong id="analyticsLastVisit">—</strong></div>
+</div>
+<div class="analytics-details">
+<div class="analytics-box">
+<h2>Останні відвідування</h2>
+<div id="analyticsVisitsList"></div>
+</div>
+<div class="analytics-box">
+<h2>Популярні дії</h2>
+<div id="analyticsActionsList"></div>
+</div>
+</div>
+</section>
+<section class="admin-section">
+<div class="admin-section-head">
+<div>
+<p>Повідомлення</p>
+<h1>Вхідні звернення</h1>
+</div>
+<button id="clearMessages" type="button">Очистити локальні повідомлення</button>
+</div>
+<div class="messages" id="messages"></div>
+</section>
+<section class="admin-section">
+<div class="admin-section-head">
+<div>
+<p>Партнерство</p>
+<h1>Партнерські пропозиції</h1>
+</div>
+<button id="clearPartnerProposals" type="button">Очистити пропозиції</button>
+</div>
+<div class="messages" id="partnerProposals"></div>
+</section>
+<section class="admin-section" id="reviewsModerationSection">
+<div class="admin-section-head">
+<div>
+<p>Модерація</p>
+<h1>Відгуки користувачів</h1>
+</div>
+<button id="clearReviewsAdmin" type="button">Очистити всі відгуки</button>
+</div>
+<div class="admin-summary reviews-admin-summary">
+<div><span>Усього</span><strong id="adminReviewsCount">0</strong></div>
+<div><span>Опубліковано</span><strong id="adminReviewsPublished">0</strong></div>
+<div><span>Приховано</span><strong id="adminReviewsHidden">0</strong></div>
+<div><span>З відповіддю</span><strong id="adminReviewsAnswered">0</strong></div>
+</div>
+<div class="review-admin-warning">
+Модерація працює з тим самим локальним сховищем відгуків, що й сторінка відгуків. У поточному локальному прототипі дані спільні лише для одного браузера та домену.
+</div>
+<div class="messages" id="adminReviewsList"></div>
+</section>
+<section class="admin-section">
+<div class="admin-section-head">
+<div>
+<p>Користувачі</p>
+<h1>Зареєстровані акаунти та онлайн</h1>
+</div>
+</div>
+<div class="users" id="users"></div>
+</section>
+<section class="admin-section">
+<div class="admin-section-head">
+<div>
+<p>Безпека</p>
+<h1>Дані адміністратора</h1>
+</div>
+</div>
+<div class="security-box">
+<p>Паролі та їх SHA-256 хеші навмисно не показуються в панелі. Для локального прототипу роль адміністратора можна призначити окремим інструментом нижче.</p>
+<form id="promoteForm" class="promote-form">
+<input id="promoteEmail" type="email" placeholder="Email користувача" maxlength="254" required>
+<select id="promoteRole">
+<option value="admin">admin</option>
+<option value="moderator">moderator</option>
+<option value="user">user</option>
+</select>
+<button type="submit">Змінити роль</button>
+</form>
+<div id="promoteStatus"></div>
+<form id="adminPasswordForm" class="admin-password-form">
+<input id="adminPasswordEmail" type="email" placeholder="Email користувача" maxlength="254" required>
+<input id="adminNewPassword" type="password" placeholder="Новий пароль" minlength="8" autocomplete="new-password" required>
+<button type="submit">Встановити пароль</button>
+</form>
+<div id="adminPasswordStatus"></div>
+</div>
+</section>
+<section class="admin-section owner-audit-section" id="ownerAuditSection">
+<div class="admin-section-head">
+<div>
+<p>Контроль</p>
+<h1>Журнал дій адміністрації</h1>
+</div>
+<button id="clearLogs" type="button">Очистити журнал</button>
+</div>
+<div class="admin-logs" id="adminLogs"></div>
+</section>
+</div>
+</main>
+<script src="js/admin.js"></script>
+<script>
+(function(){
+"use strict";
+var USERS_KEY="peteichuk_users";
+var SESSION_KEY="peteichuk_session";
+var MODERATION_KEY="peteichuk_moderation_v1";
+var LOGS_KEY="peteichuk_admin_logs";
+var SETTINGS_KEY="peteichuk_moderation_settings_v1";
+var currentUser=null;
+var currentRole="user";
+var selectedUserId=null;
+function readJSON(key,fallback){
+try{
+var value=localStorage.getItem(key);
+return value?JSON.parse(value):fallback;
+}catch(error){
+return fallback;
+}
+}
+function saveJSON(key,value){
+localStorage.setItem(key,JSON.stringify(value));
+}
+function getUsers(){
+var users=readJSON(USERS_KEY,[]);
+return Array.isArray(users)?users:[];
+}
+function getSession(){
+return readJSON(SESSION_KEY,null);
+}
+function getCurrentUser(){
+var session=getSession();
+if(!session)return null;
+var users=getUsers();
+if(session.email){
+var found=users.find(function(user){
+return String(user.email||"").toLowerCase()===String(session.email).toLowerCase();
+});
+if(found)return found;
+}
+if(session.user)return session.user;
+return session;
+}
+function detectRole(){
+var user=getCurrentUser();
+if(!user)return "user";
+if(user.isOwner===true||user.owner===true)return "owner";
+var role=String(user.role||"user").toLowerCase();
+if(role==="owner")return "owner";
+if(role==="admin")return "admin";
+if(role==="moderator")return "moderator";
+return "user";
+}
+function canManage(){
+return ["owner","admin"].indexOf(currentRole)!==-1;
+}
+function canModerate(){
+return ["owner","admin","moderator"].indexOf(currentRole)!==-1;
+}
+function canOwner(){
+return currentRole==="owner";
+}
+function isProtectedUser(user){
+if(!user)return false;
+var role=String(user.role||"user").toLowerCase();
+return user.isOwner===true||user.owner===true||role==="owner"||role==="admin"||role==="moderator";
+}
+function canPunishUser(user){
+return canManage()&&!isProtectedUser(user);
+}
+function escapeHTML(value){
+return String(value==null?"":value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+}
+function getModerationData(){
+var data=readJSON(MODERATION_KEY,{});
+return data&&typeof data==="object"?data:{};
+}
+function saveModerationData(data){
+saveJSON(MODERATION_KEY,data);
+window.dispatchEvent(new StorageEvent("storage",{key:MODERATION_KEY,newValue:JSON.stringify(data)}));
+}
+function createEmptyModeration(){
+return {
+status:"active",
+mutedUntil:null,
+bannedUntil:null,
+permanentBan:false,
+warnings:0,
+violations:0,
+reason:"",
+history:[],
+updatedAt:null,
+updatedBy:null
+};
+}
+function getUserModeration(user){
+var data=getModerationData();
+var id=String(user.id||user.email||"");
+if(!data[id]){
+data[id]=createEmptyModeration();
+saveModerationData(data);
+}
+if(!Array.isArray(data[id].history))data[id].history=[];
+if(typeof data[id].warnings!=="number")data[id].warnings=Number(data[id].warnings||0);
+if(typeof data[id].violations!=="number")data[id].violations=Number(data[id].violations||0);
+return data[id];
+}
+function saveUserModeration(user,moderation){
+var data=getModerationData();
+var id=String(user.id||user.email||"");
+data[id]=moderation;
+saveModerationData(data);
+}
+function getSettings(){
+var settings=readJSON(SETTINGS_KEY,null);
+if(!settings){
+settings={
+bannedWords:[],
+bannedDomains:[],
+externalLinksMode:"allow"
+};
+}
+if(!Array.isArray(settings.bannedWords))settings.bannedWords=[];
+if(!Array.isArray(settings.bannedDomains))settings.bannedDomains=[];
+if(!settings.externalLinksMode)settings.externalLinksMode="allow";
+return settings;
+}
+function saveSettings(settings){
+saveJSON(SETTINGS_KEY,settings);
+window.dispatchEvent(new StorageEvent("storage",{key:SETTINGS_KEY,newValue:JSON.stringify(settings)}));
+}
+function getAdminName(){
+var user=currentUser||{};
+return user.name||user.displayName||user.email||"Адміністратор";
+}
+function addLog(action,user,details){
+var logs=readJSON(LOGS_KEY,[]);
+if(!Array.isArray(logs))logs=[];
+logs.unshift({
+id:"mod_"+Date.now()+"_"+Math.random().toString(36).slice(2),
+action:action,
+userId:user?(user.id||user.email||null):null,
+userName:user?(user.name||user.displayName||user.email||"Користувач"):null,
+adminId:currentUser?(currentUser.id||currentUser.email||"admin"):"admin",
+adminName:getAdminName(),
+details:details||"",
+createdAt:new Date().toISOString()
+});
+saveJSON(LOGS_KEY,logs.slice(0,500));
+}
+function formatDate(value){
+if(!value)return "—";
+var date=new Date(value);
+if(isNaN(date.getTime()))return String(value);
+return date.toLocaleString("uk-UA",{dateStyle:"medium",timeStyle:"short"});
+}
+function isFuture(value){
+if(!value)return false;
+var time=new Date(value).getTime();
+return isFinite(time)&&time>Date.now();
+}
+function getStatus(user){
+if(isProtectedUser(user)){
+return {type:"active",text:"Захищена роль"};
+}
+var moderation=getUserModeration(user);
+if(moderation.permanentBan)return {type:"banned",text:"Постійний бан"};
+if(isFuture(moderation.bannedUntil))return {type:"banned",text:"Бан до "+formatDate(moderation.bannedUntil)};
+if(isFuture(moderation.mutedUntil))return {type:"muted",text:"Мут до "+formatDate(moderation.mutedUntil)};
+if(moderation.bannedUntil||moderation.mutedUntil){
+moderation.bannedUntil=null;
+moderation.mutedUntil=null;
+moderation.permanentBan=false;
+saveUserModeration(user,moderation);
+}
+return {type:"active",text:"Активний"};
+}
+function renderStats(){
+var users=getUsers();
+var warnings=0;
+var violations=0;
+var muted=0;
+var banned=0;
+users.forEach(function(user){
+if(isProtectedUser(user))return;
+var moderation=getUserModeration(user);
+warnings+=Number(moderation.warnings||0);
+violations+=Number(moderation.violations||0);
+var status=getStatus(user);
+if(status.type==="muted")muted++;
+if(status.type==="banned")banned++;
+});
+document.getElementById("moderationWarningsCount").textContent=warnings;
+document.getElementById("moderationViolationsCount").textContent=violations;
+document.getElementById("moderationMutedCount").textContent=muted;
+document.getElementById("moderationBannedCount").textContent=banned;
+}
+function renderUsers(){
+var container=document.getElementById("moderationUsersList");
+if(!container)return;
+var search=String(document.getElementById("moderationUserSearch").value||"").trim().toLowerCase();
+var users=getUsers().filter(function(user){
+if(!search)return true;
+return String(user.name||user.displayName||"").toLowerCase().indexOf(search)!==-1||String(user.email||"").toLowerCase().indexOf(search)!==-1;
+});
+if(!users.length){
+container.innerHTML='<div class="moderation-empty">Користувачів не знайдено.</div>';
+return;
+}
+container.innerHTML=users.map(function(user){
+var moderation=getUserModeration(user);
+var status=getStatus(user);
+var id=String(user.id||user.email||"");
+var name=user.name||user.displayName||"Користувач";
+var email=user.email||"";
+var protectedUser=isProtectedUser(user);
+var role=String(user.role||"user").toLowerCase();
+var punishmentButtons=protectedUser?
+'<span class="moderation-protected-badge">Захищена роль: '+escapeHTML(role==="user"?"owner":role)+'</span>':
+'<button type="button" data-mod-action="warning" data-user-id="'+escapeHTML(id)+'">Попередження</button>'+
+'<button type="button" data-mod-action="mute" data-user-id="'+escapeHTML(id)+'">Мут</button>'+
+'<button type="button" data-mod-action="ban" data-user-id="'+escapeHTML(id)+'">Бан</button>';
+return '<article class="moderation-user" data-moderation-user="'+escapeHTML(id)+'">'+
+'<div class="moderation-user-top">'+
+'<div>'+
+'<div class="moderation-user-name">'+escapeHTML(name)+'</div>'+
+'<div class="moderation-user-meta">'+escapeHTML(email)+'</div>'+
+'<span class="moderation-user-status '+status.type+'">'+escapeHTML(status.text)+'</span>'+
+'</div>'+
+'<div>Попереджень: <strong>'+Number(moderation.warnings||0)+'</strong><br>Порушень: <strong>'+Number(moderation.violations||0)+'</strong></div>'+
+'</div>'+
+'<div class="moderation-user-actions">'+
+punishmentButtons+
+'<button type="button" data-mod-action="history" data-user-id="'+escapeHTML(id)+'">Історія</button>'+
+(!protectedUser&&status.type==="muted"?'<button type="button" data-mod-action="unmute" data-user-id="'+escapeHTML(id)+'">Зняти мут</button>':"")+
+(!protectedUser&&status.type==="banned"?'<button type="button" data-mod-action="unban" data-user-id="'+escapeHTML(id)+'">Зняти бан</button>':"")+
+'</div>'+
+'</article>';
+}).join("");
+bindUserActions();
+}
+function findUser(id){
+return getUsers().find(function(user){
+return String(user.id||user.email||"")===String(id);
+});
+}
+function addModerationHistory(user,type,reason,duration){
+var moderation=getUserModeration(user);
+moderation.history=Array.isArray(moderation.history)?moderation.history:[];
+moderation.history.unshift({
+type:type,
+reason:reason||"",
+duration:duration||"",
+adminId:currentUser?(currentUser.id||currentUser.email||"admin"):"admin",
+adminName:getAdminName(),
+createdAt:new Date().toISOString()
+});
+moderation.history=moderation.history.slice(0,100);
+moderation.updatedAt=new Date().toISOString();
+moderation.updatedBy=getAdminName();
+saveUserModeration(user,moderation);
+}
+function askReason(title){
+var reason=prompt(title+" Причина:");
+if(reason===null)return null;
+reason=reason.trim();
+if(!reason)reason="Порушення правил спільноти";
+return reason;
+}
+function applyWarning(user){
+if(!canPunishUser(user)){
+alert("Власнику, адміністратору або модератору не можна видати попередження.");
+return;
+}
+var reason=askReason("Винести попередження.");
+if(reason===null)return;
+var moderation=getUserModeration(user);
+moderation.warnings=Number(moderation.warnings||0)+1;
+moderation.violations=Number(moderation.violations||0)+1;
+moderation.reason=reason;
+saveUserModeration(user,moderation);
+addModerationHistory(user,"warning",reason,"");
+addLog("moderation_warning",user,"Попередження. Причина: "+reason);
+renderAll();
+alert("Попередження видано.");
+}
+function getDurationMinutes(type){
+if(type==="5m")return 5;
+if(type==="30m")return 30;
+if(type==="1h")return 60;
+if(type==="24h")return 1440;
+if(type==="7d")return 10080;
+return 0;
+}
+function applyMute(user){
+if(!canPunishUser(user)){
+alert("Власнику, адміністратору або модератору не можна видати мут.");
+return;
+}
+var duration=prompt("Термін муту: 5m, 30m, 1h, 24h, 7d або permanent","30m");
+if(duration===null)return;
+duration=duration.trim().toLowerCase();
+var minutes=getDurationMinutes(duration);
+var permanent=duration==="permanent";
+if(!minutes&&!permanent){
+alert("Невірний термін.");
+return;
+}
+var reason=askReason("Видати мут.");
+if(reason===null)return;
+var moderation=getUserModeration(user);
+moderation.violations=Number(moderation.violations||0)+1;
+moderation.reason=reason;
+moderation.mutedUntil=permanent?null:new Date(Date.now()+minutes*60000).toISOString();
+moderation.bannedUntil=null;
+moderation.permanentBan=false;
+saveUserModeration(user,moderation);
+addModerationHistory(user,"mute",reason,permanent?"permanent":duration);
+addLog("moderation_mute",user,"Мут: "+(permanent?"назавжди":duration)+". Причина: "+reason);
+renderAll();
+}
+function applyBan(user){
+if(!canPunishUser(user)){
+alert("Власнику, адміністратору або модератору не можна видати бан.");
+return;
+}
+var duration=prompt("Термін бану: 1h, 24h, 7d або permanent","24h");
+if(duration===null)return;
+duration=duration.trim().toLowerCase();
+var minutes=duration==="1h"?60:duration==="24h"?1440:duration==="7d"?10080:0;
+var permanent=duration==="permanent";
+if(!minutes&&!permanent){
+alert("Невірний термін.");
+return;
+}
+var reason=askReason("Заблокувати користувача.");
+if(reason===null)return;
+var moderation=getUserModeration(user);
+moderation.violations=Number(moderation.violations||0)+1;
+moderation.reason=reason;
+moderation.permanentBan=permanent;
+moderation.bannedUntil=permanent?null:new Date(Date.now()+minutes*60000).toISOString();
+moderation.mutedUntil=null;
+saveUserModeration(user,moderation);
+addModerationHistory(user,"ban",reason,permanent?"permanent":duration);
+addLog("moderation_ban",user,"Бан: "+(permanent?"назавжди":duration)+". Причина: "+reason);
+renderAll();
+}
+function removeMute(user){
+if(!canPunishUser(user)){
+alert("Цю роль не можна змінювати через систему санкцій.");
+return;
+}
+var moderation=getUserModeration(user);
+moderation.mutedUntil=null;
+moderation.updatedAt=new Date().toISOString();
+saveUserModeration(user,moderation);
+addModerationHistory(user,"unmute","Мут знято адміністратором","");
+addLog("moderation_unmute",user,"Мут знято.");
+renderAll();
+}
+function removeBan(user){
+if(!canPunishUser(user)){
+alert("Цю роль не можна змінювати через систему санкцій.");
+return;
+}
+var moderation=getUserModeration(user);
+moderation.bannedUntil=null;
+moderation.permanentBan=false;
+moderation.updatedAt=new Date().toISOString();
+saveUserModeration(user,moderation);
+addModerationHistory(user,"unban","Бан знято адміністратором","");
+addLog("moderation_unban",user,"Бан знято.");
+renderAll();
+}
+function renderHistory(user){
+selectedUserId=user?String(user.id||user.email||""):null;
+var container=document.getElementById("moderationHistory");
+if(!user){
+container.innerHTML='<div class="moderation-empty">Оберіть користувача для перегляду історії.</div>';
+return;
+}
+var moderation=getUserModeration(user);
+var history=Array.isArray(moderation.history)?moderation.history:[];
+if(!history.length){
+container.innerHTML='<div class="moderation-empty">Історія для цього користувача порожня.</div>';
+return;
+}
+var clearButton=canOwner()?'<div class="moderation-owner-actions"><button type="button" class="danger" data-clear-history-user="'+escapeHTML(String(user.id||user.email||""))+'">Очистити історію цього користувача</button></div>':"";
+container.innerHTML='<div><strong>'+escapeHTML(user.name||user.displayName||user.email||"Користувач")+'</strong></div>'+clearButton+history.map(function(item){
+return '<div class="moderation-history-item"><strong>'+escapeHTML(item.type||"Дія")+'</strong><div>'+escapeHTML(item.reason||"Без причини")+'</div><small>'+escapeHTML(item.duration||"")+' · '+escapeHTML(item.adminName||"Адміністратор")+' · '+escapeHTML(formatDate(item.createdAt))+'</small></div>';
+}).join("");
+var clear=container.querySelector("[data-clear-history-user]");
+if(clear){
+clear.addEventListener("click",function(){
+clearSelectedHistory(user);
+});
+}
+}
+function clearSelectedHistory(user){
+if(!canOwner())return;
+if(!user&&selectedUserId)user=findUser(selectedUserId);
+if(!user){
+alert("Спочатку оберіть користувача.");
+return;
+}
+if(isProtectedUser(user)){
+alert("Історію санкцій захищеної ролі не можна змінювати через санкції.");
+return;
+}
+if(!confirm("Очистити всю історію модерації цього користувача?\n\nПопередження та порушення залишаться без змін."))return;
+var moderation=getUserModeration(user);
+moderation.history=[];
+moderation.updatedAt=new Date().toISOString();
+moderation.updatedBy=getAdminName();
+saveUserModeration(user,moderation);
+addLog("clear_user_moderation_history",user,"Власник очистив історію модерації користувача.");
+renderAll();
+renderHistory(user);
+}
+function clearAllWarnings(){
+if(!canOwner())return;
+var users=getUsers();
+if(!users.length){
+alert("Користувачів немає.");
+return;
+}
+if(!confirm("Очистити ВСІ попередження?\n\nПопередження всіх звичайних користувачів буде встановлено в 0.\n\nЗахищені ролі не змінюються."))return;
+var data=getModerationData();
+users.forEach(function(user){
+if(isProtectedUser(user))return;
+var id=String(user.id||user.email||"");
+if(!data[id])return;
+data[id].warnings=0;
+data[id].updatedAt=new Date().toISOString();
+data[id].updatedBy=getAdminName();
+});
+saveModerationData(data);
+addLog("clear_all_warnings",null,"Власник очистив усі попередження звичайних користувачів.");
+renderAll();
+alert("Усі попередження очищено.");
+}
+function clearAllViolations(){
+if(!canOwner())return;
+var users=getUsers();
+if(!users.length){
+alert("Користувачів немає.");
+return;
+}
+if(!confirm("Очистити ВСІ порушення?\n\nПорушення всіх звичайних користувачів буде встановлено в 0.\n\nЗахищені ролі не змінюються."))return;
+var data=getModerationData();
+users.forEach(function(user){
+if(isProtectedUser(user))return;
+var id=String(user.id||user.email||"");
+if(!data[id])return;
+data[id].violations=0;
+data[id].updatedAt=new Date().toISOString();
+data[id].updatedBy=getAdminName();
+});
+saveModerationData(data);
+addLog("clear_all_violations",null,"Власник очистив усі порушення звичайних користувачів.");
+renderAll();
+alert("Усі порушення очищено.");
+}
+function clearAllModeration(){
+if(!canOwner())return;
+var data=getModerationData();
+var count=0;
+Object.keys(data).forEach(function(id){
+var user=findUser(id);
+if(user&&isProtectedUser(user))return;
+count++;
+});
+if(!confirm("ПОВНІСТЮ ОЧИСТИТИ МОДЕРАЦІЮ?\n\nБуде скинуто для звичайних користувачів:\n• усі попередження\n• усі порушення\n• усі мути\n• усі бани\n• усі причини санкцій\n• усю історію модерації\n\nЗахищені ролі owner/admin/moderator не змінюються.\n\nЦю дію неможливо скасувати."))return;
+Object.keys(data).forEach(function(id){
+var user=findUser(id);
+if(user&&isProtectedUser(user))return;
+data[id]=createEmptyModeration();
+data[id].updatedAt=new Date().toISOString();
+data[id].updatedBy=getAdminName();
+});
+saveModerationData(data);
+addLog("clear_all_moderation",null,"Власник повністю очистив модерацію звичайних користувачів. Оброблено записів: "+count+".");
+selectedUserId=null;
+renderAll();
+document.getElementById("moderationHistory").innerHTML='<div class="moderation-empty">Історію та санкції звичайних користувачів повністю очищено.</div>';
+alert("Модерацію звичайних користувачів повністю очищено.");
+}
+function resetModerationAfterSessionsClear(){
+if(!canOwner())return false;
+var data=getModerationData();
+var count=0;
+Object.keys(data).forEach(function(id){
+var user=findUser(id);
+if(user&&isProtectedUser(user))return;
+count++;
+data[id]=createEmptyModeration();
+data[id].updatedAt=new Date().toISOString();
+data[id].updatedBy=getAdminName();
+});
+saveModerationData(data);
+addLog("clear_all_sessions_moderation_reset",null,"Після підтвердження очищення всіх сеансів власник скинув санкції, попередження, порушення та історію звичайних користувачів. Записів: "+count+".");
+selectedUserId=null;
+renderAll();
+var history=document.getElementById("moderationHistory");
+if(history){
+history.innerHTML='<div class="moderation-empty">Після очищення всіх сеансів модерацію звичайних користувачів скинуто.</div>';
+}
+return true;
+}
+function bindUserActions(){
+document.querySelectorAll("[data-mod-action]").forEach(function(button){
+button.addEventListener("click",function(){
+var user=findUser(button.dataset.userId);
+if(!user)return;
+var action=button.dataset.modAction;
+if(action==="warning")applyWarning(user);
+if(action==="mute")applyMute(user);
+if(action==="ban")applyBan(user);
+if(action==="unmute")removeMute(user);
+if(action==="unban")removeBan(user);
+if(action==="history")renderHistory(user);
+});
+});
+}
+function renderRules(){
+var settings=getSettings();
+var words=document.getElementById("bannedWordsList");
+var domains=document.getElementById("bannedDomainsList");
+words.innerHTML=settings.bannedWords.length?settings.bannedWords.map(function(item,index){
+return '<div class="moderation-rule"><span>'+escapeHTML(item.value)+' · '+escapeHTML(item.action)+'</span><button type="button" data-remove-word="'+index+'">Видалити</button></div>';
+}).join(""):'<div class="moderation-empty">Заборонених слів немає.</div>';
+domains.innerHTML=settings.bannedDomains.length?settings.bannedDomains.map(function(item,index){
+return '<div class="moderation-rule"><span>'+escapeHTML(item.value)+' · '+escapeHTML(item.action)+'</span><button type="button" data-remove-domain="'+index+'">Видалити</button></div>';
+}).join(""):'<div class="moderation-empty">Заборонених доменів немає.</div>';
+document.getElementById("externalLinksMode").value=settings.externalLinksMode;
+words.querySelectorAll("[data-remove-word]").forEach(function(button){
+button.addEventListener("click",function(){
+if(!canManage())return;
+var current=getSettings();
+current.bannedWords.splice(Number(button.dataset.removeWord),1);
+saveSettings(current);
+renderRules();
+});
+});
+domains.querySelectorAll("[data-remove-domain]").forEach(function(button){
+button.addEventListener("click",function(){
+if(!canManage())return;
+var current=getSettings();
+current.bannedDomains.splice(Number(button.dataset.removeDomain),1);
+saveSettings(current);
+renderRules();
+});
+});
+}
+function normalizeText(value){
+return String(value||"").toLowerCase().normalize("NFKC").replace(/[\u200B-\u200D\uFEFF]/g,"").replace(/[^\p{L}\p{N}]+/gu," ").replace(/\s+/g," ").trim();
+}
+function normalizeDomain(value){
+return String(value||"").toLowerCase().replace(/^https?:\/\//,"").replace(/^www\./,"").split("/")[0].split(":")[0].trim();
+}
+function extractDomains(text){
+var matches=String(text||"").match(/(?:https?:\/\/)?(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)+(?:\/[^\s]*)?/gi)||[];
+return matches.map(normalizeDomain).filter(Boolean);
+}
+function inspectText(text){
+var settings=getSettings();
+var normalized=normalizeText(text);
+var matchedWords=[];
+settings.bannedWords.forEach(function(rule){
+var value=normalizeText(rule.value);
+if(value&&normalized.indexOf(value)!==-1)matchedWords.push(rule);
+});
+var matchedDomains=[];
+extractDomains(text).forEach(function(domain){
+settings.bannedDomains.forEach(function(rule){
+var ruleDomain=normalizeDomain(rule.value);
+if(ruleDomain&&(domain===ruleDomain||domain.endsWith("."+ruleDomain)))matchedDomains.push(rule);
+});
+});
+var externalDomains=extractDomains(text);
+var mode=settings.externalLinksMode;
+var blockedByMode=mode==="block"&&externalDomains.length>0;
+var reviewByMode=mode==="review"&&externalDomains.length>0;
+var blockedWord=matchedWords.some(function(item){return item.action==="block";});
+var reviewWord=matchedWords.some(function(item){return item.action==="review";});
+var blockedDomain=matchedDomains.some(function(item){return item.action==="block";});
+var reviewDomain=matchedDomains.some(function(item){return item.action==="review";});
+return {
+allowed:!(blockedByMode||blockedWord||blockedDomain),
+action:(blockedByMode||blockedWord||blockedDomain)?"block":(reviewByMode||reviewWord||reviewDomain)?"review":matchedWords.length?"replace":"allow",
+matchedWords:matchedWords,
+matchedDomains:matchedDomains,
+domains:externalDomains
+};
+}
+function filterText(text){
+var result=inspectText(text);
+var output=String(text||"");
+var settings=getSettings();
+settings.bannedWords.filter(function(rule){return rule.action==="replace";}).forEach(function(rule){
+var value=String(rule.value||"").trim();
+if(!value)return;
+var escaped=value.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+output=output.replace(new RegExp(escaped,"giu"),"***");
+});
+return {text:output,allowed:result.allowed,action:result.action,details:result};
+}
+window.PeteichukModeration={
+inspectText:inspectText,
+filterText:filterText,
+getSettings:getSettings,
+getUserModeration:getUserModeration,
+isProtectedUser:isProtectedUser,
+isMuted:function(user){
+if(isProtectedUser(user))return false;
+return getStatus(user).type==="muted";
+},
+isBanned:function(user){
+if(isProtectedUser(user))return false;
+return getStatus(user).type==="banned";
+},
+canPost:function(user){
+if(isProtectedUser(user))return true;
+return !this.isMuted(user)&&!this.isBanned(user);
+},
+clearAllSessionsReset:resetModerationAfterSessionsClear,
+clearAllModeration:clearAllModeration,
+clearAllWarnings:clearAllWarnings,
+clearAllViolations:clearAllViolations
+};
+function renderOwnerTools(){
+var ownerTools=document.getElementById("moderationOwnerTools");
+if(!ownerTools)return;
+ownerTools.style.display=canOwner()?"":"none";
+}
+function renderAll(){
+renderStats();
+renderUsers();
+renderRules();
+renderOwnerTools();
+if(selectedUserId){
+var user=findUser(selectedUserId);
+if(user)renderHistory(user);
+}
+}
+document.getElementById("moderationUserSearch").addEventListener("input",renderUsers);
+document.getElementById("moderationRefreshUsers").addEventListener("click",renderAll);
+document.getElementById("clearSelectedModerationHistory")&&document.getElementById("clearSelectedModerationHistory").addEventListener("click",function(){
+if(!selectedUserId){
+alert("Спочатку оберіть користувача.");
+return;
+}
+var user=findUser(selectedUserId);
+if(user)clearSelectedHistory(user);
+});
+document.getElementById("clearAllWarnings")&&document.getElementById("clearAllWarnings").addEventListener("click",clearAllWarnings);
+document.getElementById("clearAllViolations")&&document.getElementById("clearAllViolations").addEventListener("click",clearAllViolations);
+document.getElementById("clearAllModeration")&&document.getElementById("clearAllModeration").addEventListener("click",clearAllModeration);
+document.getElementById("bannedWordForm").addEventListener("submit",function(event){
+event.preventDefault();
+if(!canManage())return;
+var input=document.getElementById("bannedWordInput");
+var action=document.getElementById("bannedWordAction").value;
+var value=input.value.trim();
+if(!value)return;
+var settings=getSettings();
+var normalized=normalizeText(value);
+if(settings.bannedWords.some(function(item){return normalizeText(item.value)===normalized;})){
+alert("Таке правило вже існує.");
+return;
+}
+settings.bannedWords.push({value:value,action:action,createdAt:new Date().toISOString(),createdBy:getAdminName()});
+saveSettings(settings);
+input.value="";
+renderRules();
+addLog("add_banned_word",null,"Додано правило слова/фрази: "+value+". Дія: "+action+".");
+});
+document.getElementById("bannedDomainForm").addEventListener("submit",function(event){
+event.preventDefault();
+if(!canManage())return;
+var input=document.getElementById("bannedDomainInput");
+var action=document.getElementById("bannedDomainAction").value;
+var value=normalizeDomain(input.value);
+if(!value)return;
+var settings=getSettings();
+if(settings.bannedDomains.some(function(item){return normalizeDomain(item.value)===value;})){
+alert("Такий домен уже існує.");
+return;
+}
+settings.bannedDomains.push({value:value,action:action,createdAt:new Date().toISOString(),createdBy:getAdminName()});
+saveSettings(settings);
+input.value="";
+renderRules();
+addLog("add_banned_domain",null,"Додано заборонений домен: "+value+". Дія: "+action+".");
+});
+document.getElementById("saveExternalLinksMode").addEventListener("click",function(){
+if(!canManage())return;
+var settings=getSettings();
+settings.externalLinksMode=document.getElementById("externalLinksMode").value;
+saveSettings(settings);
+addLog("change_external_links_mode",null,"Режим зовнішніх посилань: "+settings.externalLinksMode+".");
+alert("Режим збережено.");
+});
+function init(){
+currentUser=getCurrentUser();
+currentRole=detectRole();
+var section=document.getElementById("moderationSection");
+if(!canManage()){
+section.style.display="none";
+return;
+}
+renderAll();
+}
+window.addEventListener("storage",function(event){
+if(event.key===USERS_KEY||event.key===MODERATION_KEY||event.key===SETTINGS_KEY){
+currentUser=getCurrentUser();
+currentRole=detectRole();
+renderAll();
+}
+if(event.key===SESSION_KEY){
+currentUser=getCurrentUser();
+currentRole=detectRole();
+init();
+}
+});
+init();
+})();
+</script>
+</body>
+</html>

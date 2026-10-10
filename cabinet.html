@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Peteichuk — Особистий кабінет</title>
+<link rel="stylesheet" href="css/cabinet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<main class="cabinet-page">
+<div class="cabinet-container">
+<header class="cabinet-header">
+<div>
+<a class="cabinet-logo" href="index.html"><img src="logotype/peteichuk.png" alt="Peteichuk"></a>
+<p class="cabinet-label">Особистий кабінет</p>
+</div>
+<div class="cabinet-actions">
+<a class="cabinet-admin" id="adminLink" href="admin.html">Адмін-панель</a>
+<button class="cabinet-logout" id="logoutBtn" type="button">Вийти</button>
+</div>
+</header>
+<section class="cabinet-welcome">
+<div class="cabinet-profile-head">
+<div class="cabinet-avatar-wrap">
+<img id="profileAvatar" class="cabinet-avatar" src="" alt="Аватар користувача">
+<div class="cabinet-avatar-placeholder" id="avatarPlaceholder"><i class="fa fa-user"></i></div>
+</div>
+<div>
+<p class="cabinet-kicker">Ваш профіль</p>
+<h1 id="userName">Користувач</h1>
+<p id="userEmail"></p>
+<span class="cabinet-online" id="onlineStatus">Онлайн</span>
+</div>
+</div>
+</section>
+<div class="cabinet-grid">
+<a class="cabinet-card" href="index.html#team">
+<span class="cabinet-icon"><i class="fa fa-user"></i></span>
+<strong>Резюме команди</strong>
+<span>Переглянути інформацію про учасників команди.</span>
+</a>
+<a class="cabinet-card" href="index.html#contact">
+<span class="cabinet-icon"><i class="fa fa-envelope"></i></span>
+<strong>Контактна форма</strong>
+<span>Повернутися до форми та надіслати повідомлення.</span>
+</a>
+<div class="cabinet-card cabinet-card-static">
+<span class="cabinet-icon"><i class="fa fa-comments"></i></span>
+<strong>Мої повідомлення</strong>
+<span id="messageCount">0 повідомлень</span>
+</div>
+<div class="cabinet-card cabinet-card-static">
+<span class="cabinet-icon"><i class="fa fa-shield"></i></span>
+<strong>Статус</strong>
+<span id="roleStatus">Авторизований користувач</span>
+</div>
+<div class="cabinet-card cabinet-card-static">
+<span class="cabinet-icon"><i class="fa fa-star"></i></span>
+<strong>Статистика</strong>
+<span id="ratingPoints">0 балів</span>
+</div>
+</div>
+<section class="cabinet-profile">
+<div class="cabinet-section-head">
+<div>
+<p class="cabinet-kicker">Налаштування</p>
+<h2>Мій профіль</h2>
+</div>
+<p>Тут можна змінити власні дані.</p>
+</div>
+<form id="profileForm" class="cabinet-form">
+<div class="cabinet-form-avatar">
+<div class="cabinet-avatar-large-wrap">
+<img id="profileAvatarPreview" class="cabinet-avatar-large" src="" alt="Попередній перегляд аватарки">
+<div class="cabinet-avatar-placeholder cabinet-avatar-placeholder-large" id="avatarPreviewPlaceholder"><i class="fa fa-user"></i></div>
+</div>
+<div>
+<label for="profileAvatarInput">Аватарка</label>
+<input id="profileAvatarInput" type="file" accept="image/*">
+<small>Оберіть зображення для аватарки.</small>
+</div>
+</div>
+<div class="cabinet-form-grid">
+<div class="cabinet-field">
+<label for="profileName">Ім'я</label>
+<input id="profileName" type="text" maxlength="100" required>
+</div>
+<div class="cabinet-field">
+<label for="profileEmail">Email</label>
+<input id="profileEmail" type="email" maxlength="160" required>
+</div>
+<div class="cabinet-field">
+<label for="profilePhone">Номер телефону</label>
+<input id="profilePhone" type="tel" maxlength="40" placeholder="+380...">
+</div>
+<div class="cabinet-field">
+<label for="profileCompany">Фірма / організація</label>
+<input id="profileCompany" type="text" maxlength="160">
+</div>
+<div class="cabinet-field cabinet-field-full">
+<label for="profileAddress">Адреса</label>
+<input id="profileAddress" type="text" maxlength="250">
+</div>
+<div class="cabinet-field cabinet-field-full">
+<label for="profileBio">Про себе</label>
+<textarea id="profileBio" maxlength="1000" rows="5" placeholder="Коротка інформація про вас"></textarea>
+</div>
+</div>
+<div class="cabinet-socials">
+<div class="cabinet-section-head">
+<div>
+<p class="cabinet-kicker">Зв'язок</p>
+<h3>Соціальні мережі</h3>
+</div>
+</div>
+<div class="cabinet-form-grid">
+<div class="cabinet-field">
+<label for="socialInstagram"><i class="fa fa-instagram"></i> Instagram</label>
+<input id="socialInstagram" type="url" maxlength="300" placeholder="https://instagram.com/...">
+</div>
+<div class="cabinet-field">
+<label for="socialFacebook"><i class="fa fa-facebook"></i> Facebook</label>
+<input id="socialFacebook" type="url" maxlength="300" placeholder="https://facebook.com/...">
+</div>
+<div class="cabinet-field">
+<label for="socialTelegram"><i class="fa fa-telegram"></i> Telegram</label>
+<input id="socialTelegram" type="url" maxlength="300" placeholder="https://t.me/...">
+</div>
+<div class="cabinet-field">
+<label for="socialTiktok"><i class="fa fa-music"></i> TikTok</label>
+<input id="socialTiktok" type="url" maxlength="300" placeholder="https://tiktok.com/@...">
+</div>
+<div class="cabinet-field">
+<label for="socialLinkedin"><i class="fa fa-linkedin"></i> LinkedIn</label>
+<input id="socialLinkedin" type="url" maxlength="300" placeholder="https://linkedin.com/in/...">
+</div>
+<div class="cabinet-field">
+<label for="socialTwitter"><i class="fa fa-twitter"></i> X / Twitter</label>
+<input id="socialTwitter" type="url" maxlength="300" placeholder="https://x.com/...">
+</div>
+<div class="cabinet-field cabinet-field-full">
+<label for="socialWebsite"><i class="fa fa-globe"></i> Власний сайт</label>
+<input id="socialWebsite" type="url" maxlength="300" placeholder="https://...">
+</div>
+</div>
+</div>
+<div class="cabinet-form-actions">
+<button type="submit">Зберегти профіль</button>
+<span id="profileStatus"></span>
+</div>
+</form>
+</section>
+<section class="cabinet-password">
+<div class="cabinet-section-head">
+<div>
+<p class="cabinet-kicker">Безпека</p>
+<h2>Зміна пароля</h2>
+</div>
+<p>Новий пароль буде збережений тільки як SHA-256 хеш.</p>
+</div>
+<form id="passwordForm" class="cabinet-form">
+<div class="cabinet-form-grid">
+<div class="cabinet-field cabinet-field-full">
+<label for="currentPassword">Поточний пароль</label>
+<input id="currentPassword" type="password" autocomplete="current-password" required>
+</div>
+<div class="cabinet-field">
+<label for="newPassword">Новий пароль</label>
+<input id="newPassword" type="password" autocomplete="new-password" minlength="8" required>
+</div>
+<div class="cabinet-field">
+<label for="confirmNewPassword">Повторіть новий пароль</label>
+<input id="confirmNewPassword" type="password" autocomplete="new-password" minlength="8" required>
+</div>
+</div>
+<div class="cabinet-form-actions">
+<button type="submit">Змінити пароль</button>
+<span id="passwordStatus"></span>
+</div>
+</form>
+</section>
+<section class="cabinet-account-status">
+<div class="cabinet-status-box">
+<span class="cabinet-icon"><i class="fa fa-star"></i></span>
+<div>
+<strong>Бали користувача</strong>
+<p id="accountRating">0 балів</p>
+</div>
+</div>
+<div class="cabinet-status-box">
+<span class="cabinet-icon"><i class="fa fa-shield"></i></span>
+<div>
+<strong>Статус акаунта</strong>
+<p id="accountStatus">Активний</p>
+</div>
+</div>
+</section>
+<section class="cabinet-danger">
+<div class="cabinet-section-head">
+<div>
+<p class="cabinet-kicker">Небезпечна зона</p>
+<h2>Видалення акаунта</h2>
+</div>
+<p>Ця дія є незворотною.</p>
+</div>
+<div class="cabinet-danger-box">
+<div>
+<strong>Видалити мій акаунт</strong>
+<p>Після видалення ви втратите доступ до свого профілю. Цю дію неможливо скасувати.</p>
+</div>
+<button id="deleteAccountBtn" type="button">Видалити акаунт</button>
+</div>
+</section>
+<section class="cabinet-chat">
+<div class="cabinet-chat-head">
+<div>
+<p class="cabinet-kicker">Звернення</p>
+<h2>Мої повідомлення</h2>
+</div>
+<a href="index.html#contact">Нове повідомлення</a>
+</div>
+<div id="userMessages" class="user-messages"></div>
+</section>
+<div class="cabinet-notice" id="cabinetNotice"></div>
+</div>
+</main>
+<script src="js/cabinet.js"></script>
+</body>
+</html>

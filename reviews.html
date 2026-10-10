@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Відгуки клієнтів | Peteichuk Resource Center</title>
+    <link rel="icon" href="logotype/logotype.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="css/reviews.css">
+</head>
+<body>
+<div class="review-page">
+    <!-- HEADER -->
+    <header class="review-header">
+        <div class="review-container review-header-inner">
+            <a href="index.html" class="review-logo">
+                <img src="partners/peteichuk.png" alt="Peteichuk">
+            </a>
+            <nav class="review-nav" aria-label="Основна навігація">
+                <a href="index.html">Головна</a>
+                <a href="index.html#services">Послуги</a>
+                <a href="projects.html">Проєкти</a>
+                <a href="reviews.html" class="review-nav-active">Відгуки</a>
+                <a href="index.html#history">Історія</a>
+                <a href="index.html#support">Підтримка</a>
+                <a href="index.html#contact">Контакт</a>
+            </nav>
+            <div class="review-header-actions">
+                <a href="index.html" class="review-back">
+                    <i class="fa fa-arrow-left"></i>
+                    <span>На головну</span>
+                </a>
+            </div>
+        </div>
+    </header>
+    <!-- HERO -->
+    <main>
+        <section class="review-hero">
+            <div class="review-container review-hero-content">
+                <p class="review-kicker">
+                    <span></span>
+                    Досвід наших клієнтів
+                </p>
+                <h1>Відгуки клієнтів</h1>
+                <p class="review-hero-description">
+                    Реальний досвід людей, які користувалися нашими послугами
+                    та працювали з Peteichuk Resource Center.
+                </p>
+                <div class="review-hero-actions">
+                    <button
+                        type="button"
+                        class="review-primary-btn"
+                        id="openReviewModal"
+                    >
+                        <i class="fa fa-star"></i>
+                        Залишити відгук
+                    </button>
+                    <a href="#reviewsList" class="review-secondary-btn">
+                        Переглянути відгуки
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- SUMMARY -->
+        <section class="review-summary-section">
+            <div class="review-container">
+                <div class="review-section-head">
+                    <div>
+                        <p class="review-kicker">Репутація</p>
+                        <h2>Що говорять клієнти</h2>
+                    </div>
+                    <p>
+                        Рейтинг формується на основі опублікованих відгуків.
+                        Окремі показники допомагають краще зрозуміти досвід
+                        роботи з нами.
+                    </p>
+                </div>
+                <div class="review-summary-grid">
+                    <!-- MAIN SCORE -->
+                    <div class="review-score-card">
+                        <span class="review-score-label">
+                            Загальна оцінка
+                        </span>
+                        <div class="review-score-number" id="averageRating">
+                            0.0
+                        </div>
+                        <div
+                            class="review-stars review-stars-large"
+                            id="averageStars"
+                            aria-label="Загальна оцінка"
+                        >
+                            ☆☆☆☆☆
+                        </div>
+                        <p>
+                            <strong id="reviewCount">0</strong>
+                            відгуків
+                        </p>
+                    </div>
+                    <!-- BREAKDOWN -->
+                    <div class="review-breakdown-card">
+                        <div class="review-breakdown-row">
+                            <span>Якість роботи</span>
+                            <div class="review-progress">
+                                <span id="qualityProgress"></span>
+                            </div>
+                            <strong id="qualityRating">0.0</strong>
+                        </div>
+                        <div class="review-breakdown-row">
+                            <span>Комунікація</span>
+                            <div class="review-progress">
+                                <span id="communicationProgress"></span>
+                            </div>
+                            <strong id="communicationRating">0.0</strong>
+                        </div>
+                        <div class="review-breakdown-row">
+                            <span>Дотримання строків</span>
+                            <div class="review-progress">
+                                <span id="timelinessProgress"></span>
+                            </div>
+                            <strong id="timelinessRating">0.0</strong>
+                        </div>
+                        <div class="review-breakdown-row">
+                            <span>Результат</span>
+                            <div class="review-progress">
+                                <span id="resultProgress"></span>
+                            </div>
+                            <strong id="resultRating">0.0</strong>
+                        </div>
+                        <div class="review-breakdown-row">
+                            <span>Ціна / результат</span>
+                            <div class="review-progress">
+                                <span id="valueProgress"></span>
+                            </div>
+                            <strong id="valueRating">0.0</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- REVIEWS -->
+        <section class="review-list-section" id="reviewsList">
+            <div class="review-container">
+                <div class="review-section-head">
+                    <div>
+                        <p class="review-kicker">Відгуки</p>
+                        <h2>Досвід клієнтів</h2>
+                    </div>
+                    <p>
+                        Ви можете знайти відгуки за послугою або скористатися
+                        пошуком.
+                    </p>
+                </div>
+                <!-- TOOLS -->
+                <div class="review-tools">
+                    <div class="review-search">
+                        <i class="fa fa-search"></i>
+                        <input
+                            type="search"
+                            id="reviewSearch"
+                            placeholder="Пошук у відгуках..."
+                            autocomplete="off"
+                        >
+                    </div>
+                    <div class="review-filters" id="reviewFilters">
+                        <button
+                            type="button"
+                            class="review-filter active"
+                            data-filter="all"
+                        >
+                            Усі
+                        </button>
+                        <button
+                            type="button"
+                            class="review-filter"
+                            data-filter="IT"
+                        >
+                            IT
+                        </button>
+                        <button
+                            type="button"
+                            class="review-filter"
+                            data-filter="Дизайн"
+                        >
+                            Дизайн
+                        </button>
+                        <button
+                            type="button"
+                            class="review-filter"
+                            data-filter="Ремонт"
+                        >
+                            Ремонт
+                        </button>
+                        <button
+                            type="button"
+                            class="review-filter"
+                            data-filter="Інше"
+                        >
+                            Інше
+                        </button>
+                    </div>
+                    <div class="review-sort-wrap">
+                        <label for="reviewSort">
+                            Сортування
+                        </label>
+                        <select id="reviewSort">
+                            <option value="newest">Новіші</option>
+                            <option value="oldest">Старіші</option>
+                            <option value="rating-high">Вищий рейтинг</option>
+                            <option value="rating-low">Нижчий рейтинг</option>
+                            <option value="helpful">Найкорисніші</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- LIST -->
+                <div
+                    class="review-grid"
+                    id="reviewGrid"
+                    aria-live="polite"
+                ></div>
+                <!-- EMPTY -->
+                <div
+                    class="review-empty"
+                    id="reviewEmpty"
+                >
+                    <i class="fa fa-comments-o"></i>
+                    <strong>
+                        Відгуків поки немає
+                    </strong>
+                    <span>
+                        Будьте першим, хто поділиться своїм досвідом.
+                    </span>
+                    <button
+                        type="button"
+                        class="review-primary-btn review-empty-btn"
+                        id="openReviewModalEmpty"
+                    >
+                        Залишити відгук
+                    </button>
+                </div>
+                <!-- PAGINATION -->
+                <div
+                    class="review-pagination"
+                    id="reviewPagination"
+                ></div>
+            </div>
+        </section>
+        <!-- TRUST -->
+        <section class="review-trust-section">
+            <div class="review-container">
+                <div class="review-trust">
+                    <div class="review-trust-icon">
+                        <i class="fa fa-shield"></i>
+                    </div>
+                    <div class="review-trust-content">
+                        <p class="review-kicker">
+                            Прозорість
+                        </p>
+                        <h2>
+                            Як працює система відгуків?
+                        </h2>
+                        <p>
+                            Ми прагнемо показувати реальний досвід користувачів.
+                            Відгуки можуть бути пов'язані з конкретною послугою
+                            або завершеним проєктом.
+                        </p>
+                        <div class="review-trust-list">
+                            <div>
+                                <i class="fa fa-check"></i>
+                                <span>
+                                    <strong>Підтверджений клієнт</strong>
+                                    — відгук пов'язаний із підтвердженим замовленням.
+                                </span>
+                            </div>
+                            <div>
+                                <i class="fa fa-check"></i>
+                                <span>
+                                    <strong>Окремі оцінки</strong>
+                                    — якість, комунікація, строки та результат.
+                                </span>
+                            </div>
+                            <div>
+                                <i class="fa fa-check"></i>
+                                <span>
+                                    <strong>Відповідь адміністрації</strong>
+                                    — команда може публічно відповісти на відгук.
+                                </span>
+                            </div>
+                            <div>
+                                <i class="fa fa-check"></i>
+                                <span>
+                                    <strong>Корисність</strong>
+                                    — користувачі можуть відзначити корисні відгуки.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- FOOTER -->
+    <footer class="review-footer">
+        <div class="review-container review-footer-inner">
+            <div>
+                <strong>Peteichuk Resource Center</strong>
+                <p>
+                    Відгуки та досвід наших клієнтів.
+                </p>
+            </div>
+            <nav class="review-footer-nav">
+                <a href="index.html">
+                    Головна
+                </a>
+                <a href="projects.html">
+                    Проєкти
+                </a>
+                <a href="reviews.html">
+                    Відгуки
+                </a>
+                <a href="auth.html">
+                    Вхід / Реєстрація
+                </a>
+            </nav>
+            <a
+                href="#"
+                class="review-footer-top"
+                id="reviewTop"
+            >
+                Вгору
+                <i class="fa fa-angle-up"></i>
+            </a>
+        </div>
+        <div class="review-footer-bottom">
+            <p>
+                © <span id="reviewYear"></span>
+                Peteichuk | Всі права захищені
+            </p>
+        </div>
+    </footer>
+</div>
+<!-- REVIEW MODAL -->
+<div
+    class="review-modal"
+    id="reviewModal"
+    aria-hidden="true"
+>
+    <div
+        class="review-modal-overlay"
+        data-review-modal-close
+    ></div>
+    <div
+        class="review-modal-box"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="reviewModalTitle"
+    >
+        <button
+            type="button"
+            class="review-modal-close"
+            id="reviewModalClose"
+            aria-label="Закрити"
+        >
+            <i class="fa fa-times"></i>
+        </button>
+        <p class="review-kicker">
+            Ваш досвід
+        </p>
+        <h2 id="reviewModalTitle">
+            Залишити відгук
+        </h2>
+        <p class="review-modal-description">
+            Поділіться своїм досвідом. Це допомагає нам покращувати
+            сервіс та допомагає іншим користувачам краще зрозуміти
+            наші послуги.
+        </p>
+            <p class="review-field-note" style="margin:0 0 20px;">У цій версії ваш відгук можна редагувати або видаляти з цього браузера. Після підключення акаунтів ці права мають перевірятися сервером.</p>        <form id="reviewForm" class="review-form">
+            <div class="review-form-grid">
+                <div class="review-field">
+                    <label for="reviewName">
+                        Ваше ім'я
+                    </label>
+                    <input
+                        type="text"
+                        id="reviewName"
+                        maxlength="80"
+                        required
+                        autocomplete="name"
+                        placeholder="Наприклад, Андрій"
+                    >
+                </div>
+                <div class="review-field">
+                    <label for="reviewService">
+                        Послуга
+                    </label>
+                    <select id="reviewService" required>
+                        <option value="">
+                            Оберіть послугу
+                        </option>
+                        <option value="IT">
+                            IT
+                        </option>
+                        <option value="Дизайн">
+                            Дизайн
+                        </option>
+                        <option value="Ремонт">
+                            Ремонт
+                        </option>
+                        <option value="Інше">
+                            Інше
+                        </option>
+                    </select>
+                </div>
+                <div class="review-field review-field-full">
+                    <label>
+                        Загальна оцінка
+                    </label>
+                    <div
+                        class="rating-selector"
+                        id="overallRating"
+                        role="radiogroup"
+                        aria-label="Загальна оцінка"
+                    >
+                        <button type="button" data-rating="1">☆</button>
+                        <button type="button" data-rating="2">☆</button>
+                        <button type="button" data-rating="3">☆</button>
+                        <button type="button" data-rating="4">☆</button>
+                        <button type="button" data-rating="5">☆</button>
+                    </div>
+                    <input
+                        type="hidden"
+                        id="reviewOverallValue"
+                        value="0"
+                    >
+                    <span
+                        class="rating-hint"
+                        id="ratingHint"
+                    >
+                        Оберіть оцінку
+                    </span>
+                </div>
+                <div class="review-field">
+                    <label>
+                        Якість роботи
+                    </label>
+                    <div
+                        class="small-rating"
+                        data-rating-group="quality"
+                    >
+                        <button type="button" data-value="1">1</button>
+                        <button type="button" data-value="2">2</button>
+                        <button type="button" data-value="3">3</button>
+                        <button type="button" data-value="4">4</button>
+                        <button type="button" data-value="5">5</button>
+                    </div>
+                    <input
+                        type="hidden"
+                        id="qualityValue"
+                        value="0"
+                    >
+                </div>
+                <div class="review-field">
+                    <label>
+                        Комунікація
+                    </label>
+                    <div
+                        class="small-rating"
+                        data-rating-group="communication"
+                    >
+                        <button type="button" data-value="1">1</button>
+                        <button type="button" data-value="2">2</button>
+                        <button type="button" data-value="3">3</button>
+                        <button type="button" data-value="4">4</button>
+                        <button type="button" data-value="5">5</button>
+                    </div>
+                    <input
+                        type="hidden"
+                        id="communicationValue"
+                        value="0"
+                    >
+                </div>
+                <div class="review-field">
+                    <label>
+                        Дотримання строків
+                    </label>
+                    <div
+                        class="small-rating"
+                        data-rating-group="timeliness"
+                    >
+                        <button type="button" data-value="1">1</button>
+                        <button type="button" data-value="2">2</button>
+                        <button type="button" data-value="3">3</button>
+                        <button type="button" data-value="4">4</button>
+                        <button type="button" data-value="5">5</button>
+                    </div>
+                    <input
+                        type="hidden"
+                        id="timelinessValue"
+                        value="0"
+                    >
+                </div>
+                <div class="review-field">
+                    <label>
+                        Результат
+                    </label>
+                    <div
+                        class="small-rating"
+                        data-rating-group="result"
+                    >
+                        <button type="button" data-value="1">1</button>
+                        <button type="button" data-value="2">2</button>
+                        <button type="button" data-value="3">3</button>
+                        <button type="button" data-value="4">4</button>
+                        <button type="button" data-value="5">5</button>
+                    </div>
+                    <input
+                        type="hidden"
+                        id="resultValue"
+                        value="0"
+                    >
+                </div>
+                <div class="review-field">
+                    <label>
+                        Ціна / результат
+                    </label>
+                    <div
+                        class="small-rating"
+                        data-rating-group="value"
+                    >
+                        <button type="button" data-value="1">1</button>
+                        <button type="button" data-value="2">2</button>
+                        <button type="button" data-value="3">3</button>
+                        <button type="button" data-value="4">4</button>
+                        <button type="button" data-value="5">5</button>
+                    </div>
+                    <input
+                        type="hidden"
+                        id="valueValue"
+                        value="0"
+                    >
+                </div>
+                <div class="review-field review-field-full">
+                    <label for="reviewTitle">
+                        Заголовок
+                    </label>
+                    <input
+                        type="text"
+                        id="reviewTitle"
+                        maxlength="120"
+                        placeholder="Коротко про ваш досвід"
+                    >
+                </div>
+                <div class="review-field review-field-full">
+                    <label for="reviewContent">
+                        Ваш відгук
+                    </label>
+                    <textarea
+                        id="reviewContent"
+                        maxlength="3000"
+                        minlength="20"
+                        required
+                        placeholder="Розкажіть про свій досвід..."
+                    ></textarea>
+                    <div class="review-character-count">
+                        <span id="reviewCharacterCount">0</span>/3000
+                    </div>
+                </div>
+            </div>
+            <div
+                class="review-form-status"
+                id="reviewFormStatus"
+                aria-live="polite"
+            ></div>
+            <div class="review-form-actions">
+                <button
+                    type="button"
+                    class="review-secondary-btn"
+                    id="cancelReview"
+                >
+                    Скасувати
+                </button>
+                <button
+                    type="submit"
+                    class="review-primary-btn"
+                >
+                    <i class="fa fa-paper-plane"></i>
+                    Опублікувати
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="js/reviews.js"></script>
+</body>
+</html>

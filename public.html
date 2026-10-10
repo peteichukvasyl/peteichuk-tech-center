@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Peteichuk — Обговорення</title>
+<link rel="icon" href="logotype/logotype.png">
+<link rel="stylesheet" href="css/public.css">
+</head>
+<body>
+<header class="site-header">
+<div class="chat-navbar">
+<a class="logotype" href="index.html"><img src="partners/peteichuk.png" alt="Peteichuk"></a>
+<div class="chat-navbar-title">ОБГОВОРЕННЯ</div>
+<div class="chat-account" id="chatAccount">
+<button class="account-button" id="accountButton" type="button" aria-expanded="false">
+<span class="account-dot"></span>
+<span id="accountName">Анонім</span>
+<i>⌄</i>
+</button>
+<div class="account-menu" id="accountMenu">
+<div class="account-menu-head">
+<span class="account-dot"></span>
+<div><strong id="menuName">Анонім</strong><small id="menuId">ID приховано</small></div>
+</div>
+<button type="button" id="showIdBtn">Показати мій ID</button>
+<button type="button" id="logoutBtn">Вийти</button>
+</div>
+</div>
+</div>
+</header>
+<main class="chat-page">
+<section class="chat-hero">
+<div class="section-kicker">Peteichuk Resource Center</div>
+<h1>Вільне обговорення</h1>
+<p>Пишіть під своїм ім'ям. Інші бачать лише ваше ім'я та повідомлення.</p>
+</section>
+<section class="chat-panel">
+<div class="chat-panel-head">
+<div><span class="section-kicker">Онлайн</span><h2>Повідомлення</h2></div>
+<span class="message-life">Повідомлення живуть 24 години</span>
+</div>
+<div class="auth-box" id="authBox">
+<div class="auth-tabs">
+<button class="auth-tab active" data-auth="register" type="button">Реєстрація</button>
+<button class="auth-tab" data-auth="login" type="button">Вхід</button>
+</div>
+<form id="registerForm" class="auth-form active">
+<label for="registerName">Ім'я</label>
+<input id="registerName" maxlength="40" autocomplete="nickname" required>
+<label for="registerPassword">Пароль</label>
+<input id="registerPassword" type="password" minlength="6" maxlength="100" autocomplete="new-password" required>
+<p class="form-note">Після реєстрації система створить ваш унікальний ID.</p>
+<button type="submit" class="black-button">Створити акаунт</button>
+</form>
+<form id="loginForm" class="auth-form">
+<label for="loginId">Ваш ID</label>
+<input id="loginId" maxlength="40" autocomplete="username" required>
+<label for="loginPassword">Пароль</label>
+<input id="loginPassword" type="password" maxlength="100" autocomplete="current-password" required>
+<p class="form-note">За ім'ям увійти неможливо — потрібні ID та пароль.</p>
+<button type="submit" class="black-button">Увійти</button>
+</form>
+<div class="form-status" id="authStatus"></div>
+</div>
+<div class="profile-box" id="profileBox" hidden>
+<div><span class="section-kicker">Ви увійшли</span><strong id="profileName">—</strong></div>
+<button type="button" class="outline-button" id="profileIdBtn">Мій ID</button>
+</div>
+<form class="message-form" id="messageForm" hidden>
+<textarea id="messageText" maxlength="1000" placeholder="Напишіть повідомлення..." required></textarea>
+<div class="message-form-bottom"><span id="charCount">0 / 1000</span><button type="submit" class="black-button">Опублікувати</button></div>
+<div class="form-status" id="messageStatus"></div>
+</form>
+<div class="messages" id="messages"></div>
+<div class="empty-messages" id="emptyMessages">Поки що повідомлень немає.</div>
+</section>
+</main>
+<div class="modal-overlay" id="idModal" hidden>
+<div class="modal-box">
+<button class="modal-close" id="closeIdModal" type="button" aria-label="Закрити">×</button>
+<span class="section-kicker">Ваш особистий ID</span>
+<h2>Збережіть його</h2>
+<p>Цей ID потрібен для входу разом із вашим паролем. Інші користувачі його не бачать.</p>
+<div class="id-value" id="idValue">—</div>
+<button class="black-button" id="copyIdBtn" type="button">Скопіювати ID</button>
+</div>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
